@@ -5,7 +5,7 @@ import { Dice1 } from "lucide-react";
 export default function Home() {
   return (
     <div>
-      hellomnfsdjhf
+      hello
     </div>
   );
 }
