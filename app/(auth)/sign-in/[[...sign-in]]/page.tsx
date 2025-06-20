@@ -4,7 +4,9 @@ import React from 'react'
 
 const page = () => {
   return (
-    <SignIn />
+    <div className="min-h-screen flex items-center justify-center">
+      <SignIn />
+    </div>
   )
 }
 
