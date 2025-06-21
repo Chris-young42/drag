@@ -7,7 +7,7 @@ import { LuView } from "react-icons/lu";
 export default function Home() {
   return (
     <div className="container pt-4">
-      <Suspense fallback={<StatsCards loading={true } />} >
+      <Suspense fallback={<StatsCards loading={true} />} >
         <CardStatsWrapper />
       </Suspense>
     </div>
@@ -32,31 +32,31 @@ function StatsCards(props: StatsCardProps) {
         title="Total visits"
         icon={<LuView className="text-blue-600" />}
         helperText="all time from visits"
-        value={data?.visits.toLocaleString()||""}
+        value={data?.visits.toLocaleString() || ""}
         loading={loading}
         className="shadow-md shadow-blue-600 "
       />
       <StatsCard
         title="Total visits"
-        icon={<LuView className="text-blue-600" />}
+        icon={<LuView className="text-green-600" />}
         helperText="all time from visits"
-        value={data?.visits.toLocaleString()||""}
+        value={data?.visits.toLocaleString() || ""}
         loading={loading}
         className="shadow-md shadow-blue-600 "
       />
       <StatsCard
-        title="Total visits"
-        icon={<LuView className="text-blue-600" />}
-        helperText="all time from visits"
-        value={data?.visits.toLocaleString()||""}
+        title="Total submisson"
+        icon={<LuView className="text-yellow-600" />}
+        helperText="all time from submissons"
+        value={data?.visits.toLocaleString() || ""}
         loading={loading}
         className="shadow-md shadow-blue-600 "
       />
       <StatsCard
-        title="Total visits"
-        icon={<LuView className="text-blue-600" />}
-        helperText="all time from visits"
-        value={data?.visits.toLocaleString()||""}
+        title="submisson rate"
+        icon={<LuView className="text-red-600" />}
+        helperText="Visits that result in form submission"
+        value={data?.visits.toLocaleString() || ""}
         loading={loading}
         className="shadow-md shadow-blue-600 "
       />
@@ -67,7 +67,7 @@ function StatsCards(props: StatsCardProps) {
 function StatsCard({ title, value, icon, helperText, loading, className }: { title: string, value: string, icon: React.ReactNode, helperText: string, loading: boolean, className: string }) {
   return <Card className={className}>
     <CardHeader className="flex flex-row items-center justify-between pb-2">
-      <CardTitle className="text-sm font-medium text-muted-foreground"> 
+      <CardTitle className="text-sm font-medium text-muted-foreground">
         {title}
       </CardTitle>
       {icon}
@@ -79,7 +79,7 @@ function StatsCard({ title, value, icon, helperText, loading, className }: { tit
             <span>0</span>
           </Skeleton>
         }{
-          !loading&&value
+          !loading && value
         }
       </div>
       <p className="text-xs text-muted-foreground pt-1">{helperText}</p>
