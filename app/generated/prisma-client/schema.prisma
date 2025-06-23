@@ -28,6 +28,8 @@ model Form {
 
   shareURL       String          @default(uuid())
   FormSubmissons FormSubmisson[]
+
+  @@unique([name, userId])
 }
 
 model FormSubmisson {

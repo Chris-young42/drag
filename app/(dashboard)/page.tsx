@@ -1,13 +1,14 @@
-import { GetFormStats } from "@/actions/form";
+import { GetForms, GetFormStats } from "@/actions/form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
 import { LuView } from "react-icons/lu";
 import { FaWpforms } from "react-icons/fa";
-import { HiCursorClick} from "react-icons/hi";
+import { HiCursorClick } from "react-icons/hi";
 import { TbArrowBounce } from "react-icons/tb";
 import { Separator } from "@/components/ui/separator";
 import CreateFormbtn from "@/components/CreateFormbtn";
+import { Form } from "../generated/prisma-client";
 
 export default function Home() {
   return (
@@ -15,10 +16,15 @@ export default function Home() {
       <Suspense fallback={<StatsCards loading={true} />} >
         <CardStatsWrapper />
       </Suspense>
-      <Separator className="my-6"/>
+      <Separator className="my-6" />
       <h2 className="text-4xl font-bold col-span-2">Your Forms</h2>
-      <Separator className="my-6"/>
-      <CreateFormbtn/>
+      <Separator className="my-6" />
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <CreateFormbtn />
+        <Suspense fallback={[1, 2, 3, 4].map((el) => <FormCardSkeleton key={el} />)}>
+          <FormCards />
+        </Suspense>
+      </div>
     </div>
   );
 }
@@ -94,4 +100,28 @@ function StatsCard({ title, value, icon, helperText, loading, className }: { tit
       <p className="text-xs text-muted-foreground pt-1">{helperText}</p>
     </CardContent>
   </Card>
+}
+
+function FormCardSkeleton() {
+  return <Skeleton className="border border-primary/20 h-[190px] w-full" />
+}
+async function FormCards() {
+  const forms = await GetForms()
+  return <>
+    {
+      forms.map((form) => (
+        <FormCard key={form.id} form={form} />
+      ))
+    }
+  </>
+}
+function FormCard({ form }: { form: Form }) {
+  return <Card>
+    <CardHeader>
+      <CardTitle>
+        <span className="flex items-center gap-2 justify-between">{form.name}</span>
+      </CardTitle>
+    </CardHeader>
+  </Card>
+
 }
