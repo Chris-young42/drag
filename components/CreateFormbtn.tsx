@@ -16,20 +16,32 @@ import { Button } from './ui/button'
 import * as z from "zod"
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { log } from 'console'
-const formSchama = z.object({
-    name: z.string().min(4),
-    description: z.string().optional()
-})
+import { Form, FormControl, FormField, FormItem, FormLabel } from './ui/form'
+import { Input } from './ui/input'
+import { Textarea } from './ui/textarea'
+import { toast } from 'sonner'
+import { formSchema, formSchemaType } from '@/schemas/form'
+import { CreateForm } from '@/actions/form'
 
-type formSchemaType = z.infer<typeof formSchama>
 function CreateFormbtn() {
-    const form = useForm<z.infer<typeof formSchama>>({
-        resolver: zodResolver(formSchama)
+    const form = useForm<formSchemaType>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            name: "",
+            description: "",
+        },
     })
-    function onSubmit(values: formSchemaType) {
-        console.log(values)
+    async function onSubmit(values: formSchemaType) {
+        try {
+            const formId = await CreateForm(values)
+            toast('title:Success,description:Form created successfully')
+            console.log(formId);
 
+        } catch (error) {
+            toast("Error", {
+                description: "Something went wrong,please try again",
+            })
+        }
     }
     return (
         <Dialog>
@@ -45,6 +57,42 @@ function CreateFormbtn() {
                         Create a new form to start collecting responses
                     </DialogDescription>
                 </DialogHeader>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>name</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="description"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>description</FormLabel>
+                                    <FormControl>
+                                        <Textarea rows={5} {...field} />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                    </form>
+                </Form>
+                <DialogFooter>
+                    <Button
+                        onClick={form.handleSubmit(onSubmit)}
+                        disabled={form.formState.isSubmitting} className='w-full mt-4'>
+                        {!form.formState.isSubmitting && <span>Save</span>}
+                        {form.formState.isSubmitting && <ImSpinner2 className='animate-spin' />}
+                    </Button>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     )
